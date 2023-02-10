@@ -33,21 +33,31 @@ public class CustomerController {
         return new ResponseEntity<List<Customer>>(this.customerService.getCustomers(), HttpStatus.OK);
     }
 
+    @GetMapping("/get-products-of-customer/{id}")
+    public ResponseEntity<List<Product>> getProductsOfCustomerById(@PathVariable long id) {
+        return new ResponseEntity<List<Product>>(this.customerService.getProductsOfCustomerById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable long id) {
+        return new ResponseEntity<Customer>(this.customerService.getCustomerById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/login")
     public ResponseEntity<Customer> getCustomerByAuthentication(@RequestParam(value = "email") String email, @RequestParam(value = "password") String password){
         return new ResponseEntity<>(this.customerService.getCustomerByEmailAndPassword(email, password), HttpStatus.OK);
     }
 
-    @PostMapping("/add-to-order/{id}")
-    public ResponseEntity<String> addToOrder(@PathVariable long id, @RequestParam(value = "productName") String productName){
-        this.customerService.addProductToOrder(id, productName);
-        return new ResponseEntity<>(productName + " added to cart.", HttpStatus.OK);
+    @PostMapping("/add-to-order/{customerId}/{productId}")
+    public ResponseEntity<String> addToOrder(@PathVariable(value = "customerId") long customerId, @PathVariable(value = "productId") long productId){
+        this.customerService.addProductToOrder(customerId, productId);
+        return new ResponseEntity<>(productId + " added to cart.", HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete-from-cart/{id}")
-    public ResponseEntity<String> deleteFromOrder(@PathVariable long id, @RequestParam(value = "productName") String productName){
-        this.customerService.deleteProductFromOrder(id, productName);
-        return new ResponseEntity<>(productName + " deleted from order.", HttpStatus.OK);
+    @DeleteMapping("/delete-from-cart/{customerId}/{productId}")
+    public ResponseEntity<String> deleteFromOrder(@PathVariable(value = "customerId") long customerId, @PathVariable(value = "productId") long productId){
+        this.customerService.deleteProductFromOrder(customerId, productId);
+        return new ResponseEntity<>(productId + " deleted from order.", HttpStatus.OK);
     }
 
 }

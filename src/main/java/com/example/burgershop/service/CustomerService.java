@@ -38,6 +38,17 @@ public class CustomerService {
         return customer;
     }
 
+    public Customer getCustomerById(long id){
+        return customerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Theree is no customer with this id"));
+    }
+
+    public List<Product> getProductsOfCustomerById(long id){
+        Customer customer = customerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Theree is no customer with this id"));
+        return customer.getProducts();
+    }
+
     public void deleteCustomer(long id){
         Optional<Customer> customer = customerRepo.findById(id);
         if (customer.equals(Optional.empty())){
@@ -67,10 +78,10 @@ public class CustomerService {
         return customers;
     }
 
-    public void addProductToOrder(long id, String productName){
+    public void addProductToOrder(long id, long productId){
 
-        Product product = productRepo.getProductsByName(productName)
-                .orElseThrow(() -> new RuntimeException("There is no product with this name" + productName));
+        Product product = productRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("There is no product with this id: " + productId));
 
         Customer customer = customerRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no customer with this id: "+ id));
@@ -79,16 +90,16 @@ public class CustomerService {
         customerRepo.save(customer);
     }
 
-    public void deleteProductFromOrder(long id, String productName){
+    public void deleteProductFromOrder(long id, long productId){
 
-        Product product = productRepo.getProductsByName(productName)
-                .orElseThrow(() -> new RuntimeException("There is no product with this name" + productName));
+        Product product = productRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("There is no product with this id: " + productId));
 
         Customer customer = customerRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no customer with this id: "+ id));
 
         List<Product> products = customer.getProducts();
-        if(products.stream().anyMatch( p -> p.getName().equals(productName))){
+        if(products.stream().anyMatch( p -> p.getId() == productId)){
             products.remove(product);
             customerRepo.save(customer);
         }
