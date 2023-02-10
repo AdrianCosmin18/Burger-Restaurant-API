@@ -34,6 +34,11 @@ public class Customer {
     @Column(name = "password", nullable = false)
     private String password;
 
+    public Customer(String fullName, String email, String password) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+    }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "current_order",

@@ -61,4 +61,9 @@ public class ProductService {
         product.setSrc(src);
         productRepo.save(product);
     }
+
+    public Product getProductByName(String name){
+        return productRepo.getProductsByName(name)
+                .orElseThrow(() -> new RuntimeException("There is no product with this name" + name));
+    }
 }

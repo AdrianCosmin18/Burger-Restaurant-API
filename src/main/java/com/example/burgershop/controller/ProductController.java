@@ -38,8 +38,13 @@ public class ProductController {
     }
 
     @GetMapping("/get-product-by-productType")
-    public ResponseEntity<List<Product>> getProductById(@RequestParam(name = "productType") String productType){
+    public ResponseEntity<List<Product>> getProductById(@RequestParam(value = "productType") String productType){
         return new ResponseEntity<List<Product>>(this.productService.getProductByProductType(productType), HttpStatus.OK);
+    }
+
+    @GetMapping("/by-name")
+    public ResponseEntity<Product> getProductByName(@RequestParam(value = "name") String name){
+        return new ResponseEntity<Product>(this.productService.getProductByName(name), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -49,7 +54,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProductSrcById(@PathVariable long id, @RequestParam(name = "src") String src){
+    public ResponseEntity<String> updateProductSrcById(@PathVariable long id, @RequestParam(value = "src") String src){
         this.productService.updateProductSrcById(id, src);
         return new ResponseEntity<>("src updated", HttpStatus.OK);
     }
