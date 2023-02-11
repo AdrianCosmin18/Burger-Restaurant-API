@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,5 +107,12 @@ public class CustomerService {
         else{
             throw new RuntimeException("Something went wrong");
         }
+    }
+
+    public void placeOrder(long id){
+        Customer customer = customerRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("There is no customer with this id: "+ id));
+        customer.setProducts(new ArrayList<>());
+        customerRepo.save(customer);
     }
 }
