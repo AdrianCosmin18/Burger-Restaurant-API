@@ -49,15 +49,13 @@ public class CustomerController {
     }
 
     @PostMapping("/add-to-order/{customerId}/{productId}")
-    public ResponseEntity<String> addToOrder(@PathVariable(value = "customerId") long customerId, @PathVariable(value = "productId") long productId){
+    public void addToOrder(@PathVariable(value = "customerId") long customerId, @PathVariable(value = "productId") long productId){
         this.customerService.addProductToOrder(customerId, productId);
-        return new ResponseEntity<>(productId + " added to cart.", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-from-cart/{customerId}/{productId}")
-    public ResponseEntity<String> deleteFromOrder(@PathVariable(value = "customerId") long customerId, @PathVariable(value = "productId") long productId){
+    public void deleteFromOrder(@PathVariable(value = "customerId") long customerId, @PathVariable(value = "productId") long productId){
         this.customerService.deleteProductFromOrder(customerId, productId);
-        return new ResponseEntity<>(productId + " deleted from order.", HttpStatus.OK);
     }
 
 }
