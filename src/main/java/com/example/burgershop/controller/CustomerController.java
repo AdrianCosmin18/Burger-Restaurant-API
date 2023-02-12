@@ -63,4 +63,9 @@ public class CustomerController {
         this.customerService.placeOrder(id);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteCustomerById(@PathVariable long id){
+        this.customerService.deleteCustomer(id);
+    }
+
 }
