@@ -115,4 +115,26 @@ public class CustomerService {
         customer.setProducts(new ArrayList<>());
         customerRepo.save(customer);
     }
+
+    public void updateCustomerByEmail(String oldEmail, CustomerDTO customerDTO){
+
+        Customer customer = this.customerRepo.getCustomersByEmail(oldEmail)
+                .orElseThrow(() -> new RuntimeException("There is no customer with this email"));
+
+        if(customer.getEmail().equals(customerDTO.getEmail())){
+            this.customerRepo.updateCustomerByEmail(oldEmail, customerDTO.getFullName(), customerDTO.getEmail(), customerDTO.getPassword());
+        }else if(this.customerRepo.getCustomersByEmail(customerDTO.getEmail()).isPresent()){
+            throw new RuntimeException("This email is assigned to another account");
+        }else{
+            this.customerRepo.updateCustomerByEmail(oldEmail, customerDTO.getFullName(), customerDTO.getEmail(), customerDTO.getPassword());
+        }
+    }
+
+    public void deleteCustomerByEmail(String email){
+        if(this.customerRepo.getCustomersByEmail(email).isPresent()){
+            this.customerRepo.deleteByEmail(email);
+        }else{
+            throw new RuntimeException("There is no user with this email");
+        }
+    }
 }

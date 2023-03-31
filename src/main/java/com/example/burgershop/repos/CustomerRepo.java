@@ -20,4 +20,13 @@ public interface CustomerRepo extends JpaRepository<Customer, Long> {
     @Query("update Customer c set c.email = ?3, c.fullName = ?2, c.password = ?4 where c.id = ?1")
     void updateById(long id, String fullName, String email, String password);
 
+    @Modifying
+    @Transactional
+    @Query("update Customer c set c.fullName = ?2, c.email = ?3, c.password = ?4 where c.email = ?1")
+    void updateCustomerByEmail(String oldEmail, String fullName, String newEmail, String password);
+
+    @Modifying
+    @Transactional
+    void deleteByEmail(String email);
+
 }
