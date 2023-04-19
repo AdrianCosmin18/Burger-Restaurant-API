@@ -116,18 +116,30 @@ public class CustomerService {
         customerRepo.save(customer);
     }
 
-    public void updateCustomerByEmail(String oldEmail, CustomerDTO customerDTO){
+    public Customer updateCustomerByEmail(String oldEmail, CustomerDTO customerDTO){
 
         Customer customer = this.customerRepo.getCustomersByEmail(oldEmail)
                 .orElseThrow(() -> new RuntimeException("There is no customer with this email"));
 
         if(customer.getEmail().equals(customerDTO.getEmail())){
-            this.customerRepo.updateCustomerByEmail(oldEmail, customerDTO.getFullName(), customerDTO.getEmail(), customerDTO.getPassword());
+            customer.setEmail(customerDTO.getEmail());
+            customer.setFullName(customerDTO.getFullName());
+            customer.setPassword(customerDTO.getPassword());
+
+            return this.customerRepo.saveAndFlush(customer);
+//            this.customerRepo.updateCustomerByEmail(oldEmail, customerDTO.getFullName(), customerDTO.getEmail(), customerDTO.getPassword());
         }else if(this.customerRepo.getCustomersByEmail(customerDTO.getEmail()).isPresent()){
             throw new RuntimeException("This email is assigned to another account");
         }else{
-            this.customerRepo.updateCustomerByEmail(oldEmail, customerDTO.getFullName(), customerDTO.getEmail(), customerDTO.getPassword());
+            customer.setEmail(customerDTO.getEmail());
+            customer.setFullName(customerDTO.getFullName());
+            customer.setPassword(customerDTO.getPassword());
+
+            return this.customerRepo.saveAndFlush(customer);
+//            this.customerRepo.updateCustomerByEmail(oldEmail, customerDTO.getFullName(), customerDTO.getEmail(), customerDTO.getPassword());
         }
+
+
     }
 
     public void deleteCustomerByEmail(String email){

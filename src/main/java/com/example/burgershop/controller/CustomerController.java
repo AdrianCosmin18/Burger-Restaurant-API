@@ -69,8 +69,8 @@ public class CustomerController {
     }
 
     @PutMapping("/{email}")
-    public void updateCustomer(@PathVariable String email, @RequestBody CustomerDTO customerDTO){
-        this.customerService.updateCustomerByEmail(email, customerDTO);
+    public Customer updateCustomer(@PathVariable String email, @RequestBody CustomerDTO customerDTO){
+        return this.customerService.updateCustomerByEmail(email, customerDTO);
     }
 
     @DeleteMapping("/delete-customer/{email}")
